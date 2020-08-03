@@ -1,0 +1,18 @@
+{
+  "name": "vendor_name/etoro_scraper",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Mark Dissel",
+      "email": "m.dissel@gmu.online"
+    }
+  ],
+  "require": {
+    "fabpot/goutte": "^3.2",
+    "guzzlehttp/guzzle": "^6.2",
+    "symfony/panther": "^0.7.1",
+    "ext-json": "*"
+  }
+}
