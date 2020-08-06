@@ -53,7 +53,7 @@ function setInvestors($investors, $conn) {
 
 function setInvestmentData($customerId, $investmentData, $conn) {
     foreach($investmentData as $investment) {
-        $stmt = $conn->prepare("INSERT INTO investments (customer_id, market, action, invested, profit, value) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE market = values(market), action = values(action), invested = values(invested), profit = values(profit), value = values(value) ");
+        $stmt = $conn->prepare("INSERT INTO investments (customer_id, market, action, invested, profit, value) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("issddd", $customerId, $investment['market'], $investment['action'], $investment['invested'], $investment['profit'], $investment['value']);
         $stmt->execute();
         printf($stmt->error);
