@@ -141,3 +141,43 @@ function getAvgHoldingTimeInMonths($time) {
     return $time;
 }
 
+
+function getInvestments($html) {
+    /**
+     * Gets the investment data from the HTML files
+     * @param string $html A HTML string from the investor portfolio page
+     * @return array Returns a key-value array per investment with the market, action, invested, profit and value (last three in percentages)
+     */
+    $markets = getContents($html, 'i-portfolio-table-name-symbol ng-binding">', '</div>');
+    $actions = getContents($html, '<span ng-if="!item.MirrorID" class="ng-binding ng-scope">', '</span>');
+    $percentages = getContents($html, '<ui-table-cell class="ng-binding">', '</ui-table-cell>');
+    $profits = getContents($html, '<ui-table-cell ng-class="{negative: item.NetProfit < 0, positive: item.NetProfit > 0}" class="ng-binding', '</ui-table-cell>');
+    return parseInvestmentData($markets, $actions, $percentages, $profits);
+}
+
+function parseInvestmentData($markets, $actions, $percentages, $profits) {
+    /**
+     * Parses the investment data in a readable array
+     * @param array $markets An array containing the invested markets
+     * @param array $actions An array containing the actions (Buying or Selling)
+     * @param array $percentages An array containing the invested or value percentages
+     * @param array $profits An array containing the profit in percentages
+     * @return array Returns a key-value array per investment with the market, action, invested, profit and value (last three in percentages)
+     */
+    foreach($profits as $key=>$profit) {
+        $profit = substr($profit, strpos($profit, ">") + 1);
+        $profits[$key] = $profit;
+    }
+    $investmentData = array();
+    $x = 0;
+    for ($i = 0; $i < count($markets); $i++) {
+        $investmentData[$i] = array("market" => $markets[$i],  "action" => $actions[$i], "invested" => $percentages[$x], "profit" => $profits[$i], "value" => $percentages[$x + 1]);
+        $x += 2;
+    }
+    foreach($investmentData as $key=>$investments) {
+        foreach($investments as $subkey=>$investment) {
+            $investmentData[$key][$subkey] = str_replace("%", "", $investment);
+        }
+    }
+    return $investmentData;
+}

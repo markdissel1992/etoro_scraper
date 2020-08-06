@@ -13,6 +13,7 @@
     "fabpot/goutte": "^3.2",
     "guzzlehttp/guzzle": "^6.2",
     "symfony/panther": "^0.7.1",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-mysqli": "*"
   }
 }
