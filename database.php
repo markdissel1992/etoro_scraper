@@ -1,9 +1,10 @@
 <?php
-$servername = "localhost";
-$username = "gmu_online";
-$password = "Gmuonline123";
-$dbname = "etoro_stock_market";
+$db = parse_ini_file("database.ini");
 
+$username = $db['user'];
+$password = $db['pass'];
+$dbname = $db['name'];
+$servername = $db['host'];
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
