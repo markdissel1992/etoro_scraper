@@ -1,5 +1,4 @@
 <body><pre style="word-wrap: break-word; white-space: pre-wrap;">{
-  "Status": "OK",
   "TotalRows": 112023,
   "Items": [
     {

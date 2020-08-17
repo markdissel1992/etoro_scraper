@@ -26,6 +26,20 @@ function getInvestors($conn) {
     }
 }
 
+function getTopNInvestors($conn, $amount) {
+    $sql = 'SELECT * FROM investors WHERE investing_score is not null AND amount_data_months > 24 ORDER BY investing_score desc LIMIT '.$amount;
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $investors = Array();
+        while($row = $result->fetch_assoc()) {
+            $investors[] = Array($row['id'], $row['name']);
+        }
+        return $investors;
+    } else {
+        return Array();
+    }
+}
+
 function setMonthlyInvestorData($customerId, $data, $conn) {
     foreach($data as $key=>$value) {
         $stmt = $conn->prepare("INSERT INTO investing_history (customer_id, month_year, profit) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE profit=VALUES(profit)");
@@ -48,7 +62,7 @@ function setInvestors($investors, $conn) {
         $stmt = $conn->prepare("INSERT INTO investors (name) VALUES (?)");
         $stmt->bind_param("s", $investor['UserName']);
         $stmt->execute();
-        printf($stmt->error);
+        //printf($stmt->error);
     }
 }
 
